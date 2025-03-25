@@ -18,7 +18,7 @@
   </header>
   <div class="container">
     <div class="overlay">
-      <p class="subtitle">Select Purpose</p>
+      <p class="subtitle">Select Purposesssssss</p>
       <div class="purpose-box">
         <button onclick="window.location.href='{{ url('/borrow_book') }}'"class="purpose-btn">Borrow Book</button>
         <button onclick="window.location.href='{{ url('/study') }}'" class="purpose-btn">Study</button>
