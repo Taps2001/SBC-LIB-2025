@@ -56,7 +56,6 @@ Route::get('/last-login', function (Request $request) {
 })->name('last-login');
 
 
-
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     // Admin Dashboard
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
@@ -67,28 +66,22 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::view('/student_report', 'Sidebar.student_report')->name('student_report');
     Route::view('/users', 'Sidebar.users')->name('users');
 
-
-        
     // Users
-    Route::get('/admin/users/list', [UserController::class, 'getUsers'])->name('admin.users.list');
-    Route::delete('/admin/users/{id}', [UserController::class, 'deleteUser'])->name('admin.users.delete');
+    Route::get('/users/list', [UserController::class, 'getUsers'])->name('users.list');
+    Route::delete('/users/{id}', [UserController::class, 'deleteUser'])->name('users.delete');
 
     // Student Report Routes
-    Route::get('/admin/student_report/list', [StudEnrolled::class, 'getStudentReport'])->name('admin.student_report.list');
-    Route::delete('/admin/student_report/{id}', [StudEnrolled::class, 'deleteStudentReport'])->name('admin.student_report.delete');
-    // Route::post('/admin/student_report/store', [StudEnrolled::class, 'store'])->name('admin.student_report.store');
-    // Route::get('/admin/student_report/{id}/edit', [StudEnrolled::class, 'edit'])->name('admin.student_report.edit');
-    // Route::put('/admin/student_report/{id}/update', [StudEnrolled::class, 'update'])->name('admin.student_report.update');
-
-
+    Route::get('/student_report/list', [StudEnrolled::class, 'getStudentReport'])->name('student_report.list');
+    Route::delete('/student_report/{id}', [StudEnrolled::class, 'deleteStudentReport'])->name('student_report.delete');
+    // Route::post('/student_report/store', [StudEnrolled::class, 'store'])->name('student_report.store');
+    // Route::get('/student_report/{id}/edit', [StudEnrolled::class, 'edit'])->name('student_report.edit');
+    // Route::put('/student_report/{id}/update', [StudEnrolled::class, 'update'])->name('student_report.update');
 
     // Student Info Routes
-    Route::get('/admin/student_info/list', [StudInfo::class, 'getStudentInfo'])->name('admin.student_info.list');
-    Route::post('/admin/store-student', [StudInfo::class, 'store'])->name('admin.store_student');
-    Route::get('/admin/get-students', [StudInfo::class, 'getStudents'])->name('admin.get_students');
+    Route::get('/student_info/list', [StudInfo::class, 'getStudentInfo'])->name('student_info.list');
+    Route::post('/store-student', [StudInfo::class, 'store'])->name('store_student');
+    Route::get('/get-students', [StudInfo::class, 'getStudents'])->name('get_students');
 
-
-    Route::delete('/admin/student_info/{id}', [StudInfo::class, 'deleteStudentReport'])->name('admin.student_info.delete');
+    Route::delete('/student_info/{id}', [StudInfo::class, 'deleteStudentReport'])->name('student_info.delete');
 });
-
 
