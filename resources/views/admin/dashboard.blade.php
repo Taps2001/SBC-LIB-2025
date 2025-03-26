@@ -21,15 +21,15 @@
     <div class="main-content">
 
         <h2>Admin Dashboard</h2>
-        <div class="btn">
+        <div class="d-flex  justify-content-end align-items-center">
             <div class="buttons">
             <div class="buttons d-flex justify-content-end">
-                    <button type="button" class="btn btn-sm" id="addStudentButton">Add Student</button>  <!-- Green -->
-                    <button type="button" class="btn btn-sm" id="export">Export</button>  <!-- Yellow -->
-                    <button type="button" class="btn btn-sm" id="import">Import</button>  <!-- Red -->
+                    <button type="button" class="btn btn-sm btn-success" id="addStudentButton">Add Student</button>  <!-- Green -->
+                    <button type="button" class="btn btn-sm btn-danger" id="export">Export</button>  <!-- Yellow -->
+                    <button type="button" class="btn btn-sm btn-warning" id="import">Import</button>  <!-- Red -->
                 </div>
             </div>
-            <div class="buttons filter">
+            <div class="buttons filter me-2">
                 <button>Filter</button>
                 <input type="date">
                 <p> to </p>
@@ -81,7 +81,7 @@
                     searchable: false, 
                     render: function(data, type, row) {
                         return `
-                            <button class="action-btn add" onclick="addUser(${row.IDno})">Add</button>
+                           
                             <button class="action-btn update" onclick="updateUser(${row.IDno})">Update</button>
                             <button class="action-btn delete" onclick="deleteUser(${row.IDno})">Delete</button>
                         `;

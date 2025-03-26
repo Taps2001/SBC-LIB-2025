@@ -66,26 +66,29 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::view('/student_enrolled', 'Sidebar.student_enrolled')->name('student_enrolled');
     Route::view('/student_report', 'Sidebar.student_report')->name('student_report');
     Route::view('/users', 'Sidebar.users')->name('users');
+
+
+        
+    // Users
+    Route::get('/admin/users/list', [UserController::class, 'getUsers'])->name('admin.users.list');
+    Route::delete('/admin/users/{id}', [UserController::class, 'deleteUser'])->name('admin.users.delete');
+
+    // Student Report Routes
+    Route::get('/admin/student_report/list', [StudEnrolled::class, 'getStudentReport'])->name('admin.student_report.list');
+    Route::delete('/admin/student_report/{id}', [StudEnrolled::class, 'deleteStudentReport'])->name('admin.student_report.delete');
+    // Route::post('/admin/student_report/store', [StudEnrolled::class, 'store'])->name('admin.student_report.store');
+    // Route::get('/admin/student_report/{id}/edit', [StudEnrolled::class, 'edit'])->name('admin.student_report.edit');
+    // Route::put('/admin/student_report/{id}/update', [StudEnrolled::class, 'update'])->name('admin.student_report.update');
+
+
+
+    // Student Info Routes
+    Route::get('/admin/student_info/list', [StudInfo::class, 'getStudentInfo'])->name('admin.student_info.list');
+    Route::post('/admin/store-student', [StudInfo::class, 'store'])->name('admin.store_student');
+    Route::get('/admin/get-students', [StudInfo::class, 'getStudents'])->name('admin.get_students');
+
+
+    Route::delete('/admin/student_info/{id}', [StudInfo::class, 'deleteStudentReport'])->name('admin.student_info.delete');
 });
 
 
-// Users
-Route::get('/admin/users/list', [UserController::class, 'getUsers'])->name('admin.users.list');
-Route::delete('/admin/users/{id}', [UserController::class, 'deleteUser'])->name('admin.users.delete');
-
-// Student Report Routes
-Route::get('/admin/student_report/list', [StudEnrolled::class, 'getStudentReport'])->name('admin.student_report.list');
-Route::delete('/admin/student_report/{id}', [StudEnrolled::class, 'deleteStudentReport'])->name('admin.student_report.delete');
-// Route::post('/admin/student_report/store', [StudEnrolled::class, 'store'])->name('admin.student_report.store');
-// Route::get('/admin/student_report/{id}/edit', [StudEnrolled::class, 'edit'])->name('admin.student_report.edit');
-// Route::put('/admin/student_report/{id}/update', [StudEnrolled::class, 'update'])->name('admin.student_report.update');
-
-
-
-// Student Info Routes
-Route::get('/admin/student_info/list', [StudInfo::class, 'getStudentInfo'])->name('admin.student_info.list');
-Route::post('/admin/store-student', [StudInfo::class, 'store'])->name('admin.store_student');
-Route::get('/admin/get-students', [StudInfo::class, 'getStudents'])->name('admin.get_students');
-
-
-Route::delete('/admin/student_info/{id}', [StudInfo::class, 'deleteStudentReport'])->name('admin.student_info.delete');

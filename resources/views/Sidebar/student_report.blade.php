@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Report</title>
+    <title>Student Information</title>
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('Style/dash.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    
 </head>
 <body>
     <div class="top-header">Southern Baptist College Library</div>
@@ -13,174 +18,264 @@
         <img id="darkModeIcon" src="icons/dark_mode_2.png" alt="Toggle Mode">
     </button>
     
-        @include('sidebar.sidebar')
 
+    @include('sidebar.sidebar')
+
+    <!-- Main Content -->
     <div class="main-content">
-        <h2>Student Report</h2>
-        <div class="btn">
-            <div class="buttons">
-                <button id="openModalBtn">Generate Report</button>
-                <button>Export</button>
-                <button>Import</button>
-            </div>
-            <!-- <div class="buttons filter">
-                <button>Filter</button>
-                <input type="date">
-                <p> to </p>
-                <input type="date">
-            </div> -->
+        <h2>Students Reports</h2>
+        <div class="d-flex buttons d-flex justify-content-end">
+            <button type="button" class="btn btn-sm btn-success" id="addStudentButton">Add Student</button>  <!-- Green -->
+            <button type="button" class="btn btn-sm btn-danger" id="generate">Generate Report</button>  <!-- Red -->
+            <button type="button" class="btn btn-sm btn-warning" id="export">Export</button>  <!-- Yellow -->
         </div>
-        <table id="usersTable" class="display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>StudNumber</th>
-                    <th>BarcodeNumber</th>
-                    <th>SYSemCode</th>
-                    <th>IDNUmber</th>
-                    <th>Course</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table>      
-    </div>
-     <!-- The Modal -->
-     <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Select Type of Reports</h2>
-             <!-- Date inputs -->
-             <div class="date-container">
-                <label for="startDate">Start Date:</label>
-                <input type="date" id="startDate">
-                <label for="endDate">End Date:</label>
-                <input type="date" id="endDate">
+
+    <!-- Bootstrap Tabs -->
+        <ul class="nav nav-tabs mt-3">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#adminsTableContainer">Student Enrolled</a> 
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#adminsTableContainer">Student Enrolled</a> 
+            </li> -->
+        </ul>
+
+        <div class="tab-content mt-3">
+            <!-- Student Information -->
+            <div id="usersTableContainer" class="tab-pane fade show"> 
+
+                
             </div>
 
-            <!-- Buttons -->
-            <div class="btn-container">
-                <button id="top10Highest" onclick="goToPage('top10_highest.html')">Top 10 Highest Logged In</button>
-                <button id="top10Department" onclick="goToPage('top10_department.html')">Top 10 Logged In by Department</button>
-                <button id="top10Department">Top 10 Logged In by Department</button>
-                <button id="top10Department">Top 10 Logged In by Department</button>
+            <!-- Student Enrolled -->
+            <div id="adminsTableContainer" class="tab-pane fade show active"> 
+                <div class="table-container">
+                    <table id="StudEnrolled" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ID Number</th>
+                                <th>Student Name</th>
+                                <th>Course</th>
+                                <th>Year Level</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+
+
+
+        <!-- Add Student Modal -->
+        <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content shadow-lg rounded-4">
+                    <div class="modal-header bg-primary text-white d-flex justify-content-center w-100">
+                        <h5 class="modal-title" id="addStudentModalLabel">Add Student</h5>
+                        <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="addStudentForm">
+                            <div class="row g-3">
+                                <!-- First Row -->
+                                <div class="col-md-4">
+                                    <label for="IDNo" class="form-label">ID Number</label>
+                                    <input type="text" class="form-control" id="IDNo" name="IDNo" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="BarcodeNo" class="form-label">Barcode Number</label>
+                                    <input type="text" class="form-control" id="BarcodeNo" name="BarcodeNo" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="Gender" class="form-label">Gender</label>
+                                    <select class="form-select" id="Gender" name="Gender" required>
+                                        <option value="" selected disabled>Choose...</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+
+                                <!-- Second Row -->
+                                <div class="col-md-6">
+                                    <label for="lname" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lname" name="lname" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="fname" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="fname" name="fname" required>
+                                </div>
+
+                                <!-- Third Row -->
+                                <div class="col-md-4">
+                                    <label for="vCourse" class="form-label">Course</label>
+                                    <input type="text" class="form-control" id="vCourse" name="vCourse">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="yearLevel" class="form-label">Year Level</label>
+                                    <input type="text" class="form-control" id="yearLevel" name="yearLevel">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="Bdate" class="form-label">Birthdate</label>
+                                    <input type="date" class="form-control" id="Bdate" name="Bdate" required>
+                                </div>
+
+                                <!-- Fourth Row -->
+                                <div class="col-md-6">
+                                    <label for="HomeAddress" class="form-label">Home Address</label>
+                                    <input type="text" class="form-control" id="HomeAddress" name="HomeAddress">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="Gurdian" class="form-label">Guardian</label>
+                                    <input type="text" class="form-control" id="Gurdian" name="Gurdian">
+                                </div>
+
+                                <!-- Fifth Row -->
+                                <div class="col-md-6">
+                                    <label for="Guardian_Address" class="form-label">Guardian Address</label>
+                                    <input type="text" class="form-control" id="Guardian_Address" name="Guardian_Address">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="Remarks" class="form-label">Remarks</label>
+                                    <input type="text" class="form-control" id="Remarks" name="Remarks">
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="modal-footer mt-4">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Student</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Generate Report Modal -->
+        <div class="modal fade" id="GenerateReport" tabindex="-1" aria-labelledby="importStudentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content shadow-lg rounded-4 bg-light">
+                    <!-- Modal Header -->
+                    <div class="modal-header bg-primary text-white d-flex justify-content-center w-100">
+                        <h5 class="modal-title" id="importStudentModalLabel">Generate Report</h5>
+                        <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Modal Body with Scrollable Content -->
+                    <div class="modal-body p-4" style="max-height: 500px; overflow-y: auto;">
+                        <!-- Report Options -->
+                        <h6 class="mb-3">Select a Report to View:</h6>
+                        <div class="list-group">
+                            <!-- Top 10 Reports Section -->
+                            <a href="#" class="list-group-item list-group-item-action bg-light rounded-3 shadow-sm mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Top 10 Highest Logins</span>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-primary me-2">View</button>
+                                        <button class="btn btn-sm btn-success">Download</button>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action bg-light rounded-3 shadow-sm mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Top 10 Studying Students</span>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-primary me-2">View</button>
+                                        <button class="btn btn-sm btn-success">Download</button>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action bg-light rounded-3 shadow-sm mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Top 10 Best Performing Students</span>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-primary me-2">View</button>
+                                        <button class="btn btn-sm btn-success">Download</button>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action bg-light rounded-3 shadow-sm mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Top 10 Students with Most Attendance</span>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-primary me-2">View</button>
+                                        <button class="btn btn-sm btn-success">Download</button>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action bg-light rounded-3 shadow-sm mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Top 10 Most Improved Students</span>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-primary me-2">View</button>
+                                        <button class="btn btn-sm btn-success">Download</button>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Note or Description -->
+                        <div class="mt-4">
+                            <p class="text-muted">
+                                Select a report to view detailed information about the top-performing students in each category. You can filter and sort reports based on different parameters.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    <!-- JS Libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('script.js') }}"></script>
+
+    <script>
+        $(document).ready(function() { 
+            // Initialize Admins DataTable
+            $('#StudEnrolled').DataTable({
+                processing: true,
+                serverSide: true,
+                // scrollY: "300px",
+                // scrollCollapse: true,
+                ajax: "{{ route('admin.student_report.list') }}",
+                columns: [
+                    { data: 'IDno', name: 'IDno' },
+                    { data: 'FullName', name: 'FullName' },
+                    { data: 'Course', name: 'Course' },
+                    { data: 'yearLevel', name: 'yearLevel' },
+                    { 
+                        data: 'action', 
+                        name: 'action', 
+                        orderable: false, 
+                        searchable: false, 
+                        render: function(data, type, row) {
+                            return `
+                               
+                        
+                                <button class="action-btn delete" onclick="deleteUser(${row.id})">Delete</button>
+                            `;
+                        }
+                    }
+                ]
+            });
+            // Add Modal Btn
+            $('#addStudentButton').on('click', function() {
+            $('#addStudentModal').modal('show');
+        })
+
+            $('#generate').on('click', function() {
+                $('#GenerateReport').modal('show');
+        })
+        });
+
+     
+    </script>
 </body>
 </html>
-
-
-<script>
-    $(document).ready(function() {
-        $('#usersTable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('admin.student_report.list') }}",
-            columns: [
-                { data: 'Studno', name: 'Studno' },
-                { data: 'BarcodeNo', name: 'BarcodeNo' },
-                { data: 'SYSemCode', name: 'SYSemCode' },
-                { data: 'IDno', name: 'IDno' },
-                { data: 'Course', name: 'Course' },
-                { 
-                    data: 'action', 
-                    name: 'action', 
-                    orderable: false, 
-                    searchable: false, 
-                    render: function(data, type, row) {
-                        return `
-                            <button class="action-btn add" onclick="addUser(${row.IDno})">Add</button>
-                            <button class="action-btn update" onclick="updateUser(${row.IDno})">Update</button>
-                            <button class="action-btn delete" onclick="deleteUser(${row.IDno})">Delete</button>
-                        `;
-                    }
-                }
-            ]
-        });
-    });
-
-    function createUser() {
-        alert("Open create user modal or form");
-    }
-
-    function editUser(id) {
-        alert("Edit User ID: " + id);
-    }
-
-    function deleteUser(id) {
-        if (confirm("Are you sure you want to delete this user?")) {
-            $.ajax({
-                url: `/admin/student_report/${id}`,
-                type: "DELETE",
-                data: { _token: "{{ csrf_token() }}" },
-                success: function(response) {
-                    $('#usersTable').DataTable().ajax.reload();
-                    alert("User deleted successfully.");
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        }
-    }
-</script>
-
-
-
-
-<script>
-    function toggleDarkMode() {
-    const body = document.body;
-    const icon = document.getElementById('darkModeIcon');
-    body.classList.toggle('dark-mode');
-    if (body.classList.contains('dark-mode')) {
-        icon.src = "icons/light_mode.png";
-    } else {
-        icon.src = "icons/dark_mode_2.png";
-    }
-    }
-    function toggleSidebar() {
-        const sidebar = document.getElementById("studentSidebar");
-        const toggleBtn = document.getElementById("toggle-btn");
-        const mainContent = document.getElementById("mainContent");
-        document.getElementById("toggle-btn").classList.toggle("collapsed");
-        sidebar.classList.toggle("collapsed");
-        mainContent.classList.toggle("shifted");
-        toggleBtn.textContent = sidebar.classList.contains("collapsed") ? ">" : "<";
-    }
-    // Get modal, button, and close elements
-    var modal = document.getElementById("myModal");
-    var btn = document.getElementById("openModalBtn");
-    var closeBtn = document.querySelector(".close");
-
-    // Open modal when button is clicked
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // Close modal when close button is clicked
-    closeBtn.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // Close modal when clicking outside the modal content
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-    // Function to navigate to another page
-    function goToPage(page) {
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-
-        if (!startDate || !endDate) {
-            alert("Please select both start and end dates.");
-            return;
-        }
-
-        var url = page + `?start=${startDate}&end=${endDate}`;
-            window.open(url, "_blank"); // Opens in a new tab
-    }
-</script>

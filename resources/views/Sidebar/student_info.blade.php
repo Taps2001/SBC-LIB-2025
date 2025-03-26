@@ -23,7 +23,7 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <h2>Students Data</h2>
+        <h2>Student Data</h2>
         <!-- Bootstrap Tabs -->
         <ul class="nav nav-tabs mt-3">
             <li class="nav-item">

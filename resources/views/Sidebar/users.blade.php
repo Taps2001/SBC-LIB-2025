@@ -47,7 +47,7 @@
                 <div id="usersTableContainer" class="tab-pane fade show active">
 
                     <div class="buttons d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary" id="addStudentButton">Add Student</button>
+                        <button type="button" class="btn btn-primary" id="addStudentButton">Add User</button>
                         <!-- <button>Export</button>
                         <button>Import</button> -->
                     </div>
