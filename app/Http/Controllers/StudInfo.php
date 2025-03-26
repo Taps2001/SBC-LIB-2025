@@ -35,25 +35,43 @@ class StudInfo extends Controller
        
     }
 
+   
+
+    public function deleteStud($id)
+    {
+        \Log::info("Deleting student with ID:. $id");
+
+        $student = getStudentInfo::find($id);
+        if(!$student)
+        {
+            \Log::error("Student with ID {$id} not found.");
+            return response()->json(['error' => 'Student not found'], 404);
+        }
+        $student->delete();
+        return response()->json(['success' => 'Student deleted successfully']);
+    }
+
+
+
+    
+    // Fetch student details by IDno (fix: use correct model)
+    public function show($id)
+    {
+        $student = StudentInfoModel::findOrFail($id); // Correct model: StudentInfoModel
+        return response()->json($student); // Return student data as JSON
+    }
+    
     public function updateStudent(Request $request)
     {
-
         // Validate incoming request data
         $validatedData = $request->validate([
-            'IDno' => 'required|exists:student_info,IDno', // Ensure the student exists
+            'IDno' => 'required|exists:student_info,IDno',
             'fname' => 'required|string',
             'lname' => 'required|string',
             'Gender' => 'required|string',
-            'vCourse' => 'nullable|string',
-            'yearLevel' => 'nullable|string',
-            'Bdate' => 'nullable|date',
-            'HomeAddress' => 'nullable|string',
-            'Gurdian' => 'nullable|string',
-            'Guardian_Address' => 'nullable|string',
-            'Remarks' => 'nullable|string',
+            // Add validation for other fields as necessary
         ]);
     
-        // Find student by ID
         $student = StudentInfoModel::where('IDno', $validatedData['IDno'])->first();
     
         if (!$student) {
@@ -65,22 +83,10 @@ class StudInfo extends Controller
             'fname' => $validatedData['fname'],
             'lname' => $validatedData['lname'],
             'Gender' => $validatedData['Gender'],
-            'vCourse' => $validatedData['vCourse'] ?? null,
-            'yearLevel' => $validatedData['yearLevel'] ?? null,
-            'Bdate' => $validatedData['Bdate'] ?? null,
-            'HomeAddress' => $validatedData['HomeAddress'] ?? null,
-            'Gurdian' => $validatedData['Gurdian'] ?? null,
-            'Guardian_Address' => $validatedData['Guardian_Address'] ?? null,
-            'Remarks' => $validatedData['Remarks'] ?? null,
+            // Update other fields here
         ]);
     
         return response()->json(['success' => true, 'message' => 'Student updated successfully']);
     }
-    
-
-
-
-    
-
     
 }

@@ -35,9 +35,6 @@
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#adminsTableContainer">Student Enrolled</a> 
             </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#adminsTableContainer">Student Enrolled</a> 
-            </li> -->
         </ul>
 
         <div class="tab-content mt-3">
@@ -64,8 +61,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <!-- Add Student Modal -->
         <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
@@ -152,7 +147,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- Generate Report Modal -->
         <div class="modal fade" id="GenerateReport" tabindex="-1" aria-labelledby="importStudentModalLabel" aria-hidden="true">
@@ -274,6 +268,28 @@
                 $('#GenerateReport').modal('show');
         })
         });
+
+        function deleteUser(id) {
+            if (confirm('Are you sure you want to delete this student?')) {
+                $.ajax({
+                    url: '/admin/student_report/delete/' + id,  // Direct URL path
+                    type: 'DELETE',  // DELETE HTTP method
+                    data: {
+                        _token: '{{ csrf_token() }}',  // CSRF token for security
+                    },
+                    success: function(response) {
+                        alert('Student deleted successfully');  // Show success message
+                        $('#StudEnrolled').DataTable().ajax.reload();  // Reload the DataTable
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error deleting student: ' + error);  // Show error message
+                    }
+                });
+            }
+        }
+
+
+
 
      
     </script>

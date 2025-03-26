@@ -34,15 +34,19 @@ class StudEnrolled extends Controller
         }
         return response()->json(['error' => 'Unauthorized request'], 403);
     }
-
-
-    public function deleteStudentReport($id)
+    
+    public function deleteStudent($id)
     {
+        \Log::info("Deleting student with ID: " . $id);  // Log the ID
+    
         $student = StudEnrolledModel::find($id);
-        if ($student) {
-            $student->delete();
-            return response()->json(['success' => 'Student deleted successfully.']);
+        if (!$student) {
+            \Log::error("Student with ID {$id} not found.");
+            return response()->json(['error' => 'Student not found'], 404);
         }
-        return response()->json(['error' => 'Student not found.'], 404);
+    
+        $student->delete();
+        return response()->json(['success' => 'Student deleted successfully']);
     }
+    
 }

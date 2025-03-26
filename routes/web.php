@@ -72,16 +72,16 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Student Report Routes
     Route::get('/student_report/list', [StudEnrolled::class, 'getStudentReport'])->name('student_report.list');
-    Route::delete('/student_report/{id}', [StudEnrolled::class, 'deleteStudentReport'])->name('student_report.delete');
-    // Route::post('/student_report/store', [StudEnrolled::class, 'store'])->name('student_report.store');
-    // Route::get('/student_report/{id}/edit', [StudEnrolled::class, 'edit'])->name('student_report.edit');
-    // Route::put('/student_report/{id}/update', [StudEnrolled::class, 'update'])->name('student_report.update');
+    // In routes/web.php
+    Route::delete('/student_report/delete/{id}', [StudEnrolled::class, 'deleteStudent']);
+
+
 
     // Student Info Routes
     Route::get('/student_info/list', [StudInfo::class, 'getStudentInfo'])->name('student_info.list');
-    Route::post('/store-student', [StudInfo::class, 'store'])->name('store_student');
-    Route::get('/get-students', [StudInfo::class, 'getStudents'])->name('get_students');
-
-    Route::delete('/student_info/{id}', [StudInfo::class, 'deleteStudentReport'])->name('student_info.delete');
+    // Route for editing student
+    Route::get('/students/{id}', [StudInfo::class, 'show']); // Show student details by IDno
+    
+    Route::delete('.student_info/delete/{id}', [StudeInfo::class, 'deleteStud']);
 });
 
