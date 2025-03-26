@@ -19,15 +19,10 @@ class StudInfo extends Controller
                 'Gender', 'vCourse', 'HomeAddress', 'isActive'
             ]);
 
+            
             return DataTables::of($studentsinfo)
-                ->addColumn('action', function ($row) {
-                    return '
-                        <button class="btn-add" onclick="createUser()">Add</button>
-                        <button class="btn-edit" onclick="editUser(\'' . $row->IDno . '\')">Update</button>
-                        <button class="btn-delete" onclick="deleteUser(\'' . $row->IDno . '\')">Delete</button>';
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            ->rawColumns([]) 
+            ->make(true);
         }
 
         return response()->json(['error' => 'Unauthorized request'], 403);
@@ -37,20 +32,32 @@ class StudInfo extends Controller
 
    
 
-    public function deleteStud($id)
+    public function deleteStudent($IDno)
     {
-        \Log::info("Deleting student with ID:. $id");
-
-        $student = getStudentInfo::find($id);
-        if(!$student)
-        {
-            \Log::error("Student with ID {$id} not found.");
+        // Cast Studno to integer
+        $IDno = (int) $IDno;
+    
+        // Check if student exists
+        $student = DB::table('tblstudentinfo')
+                     ->where('IDno', $IDno)
+                     ->first();
+    
+        if (!$student) {
+            \Log::error("Student with Studno {$IDno} not found.");
             return response()->json(['error' => 'Student not found'], 404);
         }
-        $student->delete();
-        return response()->json(['success' => 'Student deleted successfully']);
+    
+        try {
+            DB::table('tblstudentinfo')
+              ->where('IDno', $IDno)
+              ->delete();
+    
+            return response()->json(['success' => 'Student deleted successfully']);
+        } catch (\Exception $e) {
+            \Log::error("Error deleting student: {$e->getMessage()}");
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
     }
-
 
 
     

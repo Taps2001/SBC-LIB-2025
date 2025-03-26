@@ -22,31 +22,41 @@ class StudEnrolled extends Controller
                     's.yearLevel'
                 ]);
 
-            return DataTables::of($students)
-                ->addColumn('action', function ($row) {
-                    return '
-                        <button class="btn-add" onclick="createUser()">Add</button>
-                        <button class="btn-edit" onclick="editUser(\'' . $row->IDno . '\')">Update</button>
-                        <button class="btn-delete" onclick="deleteUser(\'' . $row->IDno . '\')">Delete</button>';
-                })
-                ->rawColumns(['action'])
+                return DataTables::of($students)
+                ->rawColumns([]) 
                 ->make(true);
         }
         return response()->json(['error' => 'Unauthorized request'], 403);
     }
     
-    public function deleteStudent($id)
+    public function deleteStudent($IDno)
     {
-        \Log::info("Deleting student with ID: " . $id);  // Log the ID
+        // Cast Studno to integer
+        $IDno = (int) $IDno;
     
-        $student = StudEnrolledModel::find($id);
+        // Check if student exists
+        $student = DB::table('tblstudenrolled')
+                     ->where('IDno', $IDno)
+                     ->first();
+    
         if (!$student) {
-            \Log::error("Student with ID {$id} not found.");
+            \Log::error("Student with Studno {$IDno} not found.");
             return response()->json(['error' => 'Student not found'], 404);
         }
     
-        $student->delete();
-        return response()->json(['success' => 'Student deleted successfully']);
+        try {
+            DB::table('tblstudenrolled')
+              ->where('IDno', $IDno)
+              ->delete();
+    
+            return response()->json(['success' => 'Student deleted successfully']);
+        } catch (\Exception $e) {
+            \Log::error("Error deleting student: {$e->getMessage()}");
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
     }
     
+
+
+
 }

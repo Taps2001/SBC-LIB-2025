@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="{{ asset('Style/dash.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+
 
     
 </head>
@@ -228,6 +232,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('script.js') }}"></script>
 
     <script>
@@ -251,9 +257,7 @@
                         searchable: false, 
                         render: function(data, type, row) {
                             return `
-                               
-                        
-                                <button class="action-btn delete" onclick="deleteUser(${row.id})">Delete</button>
+                                <button class="action-btn delete" onclick="deleteUser(${row.IDno})">Delete</button>
                             `;
                         }
                     }
@@ -269,24 +273,51 @@
         })
         });
 
-        function deleteUser(id) {
-            if (confirm('Are you sure you want to delete this student?')) {
-                $.ajax({
-                    url: '/admin/student_report/delete/' + id,  // Direct URL path
-                    type: 'DELETE',  // DELETE HTTP method
-                    data: {
-                        _token: '{{ csrf_token() }}',  // CSRF token for security
-                    },
-                    success: function(response) {
-                        alert('Student deleted successfully');  // Show success message
-                        $('#StudEnrolled').DataTable().ajax.reload();  // Reload the DataTable
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Error deleting student: ' + error);  // Show error message
-                    }
-                });
-            }
+        function deleteUser(IDno) {
+            // Replace confirm with SweetAlert2 modal
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won\'t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/student_report/delete/' + IDno,  // Use Studno in the URL
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}',  // CSRF token for security
+                        },
+                        success: function(response) {
+                            // Success message using iziToast
+                            iziToast.success({
+                                title: 'Success',
+                                message: 'Student deleted successfully!',
+                                position: 'topRight',
+                                timeout: 3000  // Show message for 3 seconds
+                            });
+                            $('#StudEnrolled').DataTable().ajax.reload();  // Refresh the DataTable
+                        },
+                        error: function(xhr, status, error) {
+                            // Error message using iziToast
+                            iziToast.error({
+                                title: 'Error',
+                                message: 'Error deleting student: ' + (xhr.responseJSON.error || error),
+                                position: 'topRight',
+                                timeout: 3000  // Show message for 3 seconds
+                            });
+                        }
+                    });
+                }
+            });
         }
+
+
+
 
 
 

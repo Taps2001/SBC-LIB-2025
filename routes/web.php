@@ -72,8 +72,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Student Report Routes
     Route::get('/student_report/list', [StudEnrolled::class, 'getStudentReport'])->name('student_report.list');
-    // In routes/web.php
-    Route::delete('/student_report/delete/{id}', [StudEnrolled::class, 'deleteStudent']);
+    Route::delete('/student_report/delete/{IDno}', [StudEnrolled::class, 'deleteStudent']);
+
 
 
 
@@ -81,7 +81,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/student_info/list', [StudInfo::class, 'getStudentInfo'])->name('student_info.list');
     // Route for editing student
     Route::get('/students/{id}', [StudInfo::class, 'show']); // Show student details by IDno
+    Route::delete('/student_info/delete/{IDno}', [StudInfo::class, 'deleteStudent']);
     
-    Route::delete('.student_info/delete/{id}', [StudeInfo::class, 'deleteStud']);
 });
 
