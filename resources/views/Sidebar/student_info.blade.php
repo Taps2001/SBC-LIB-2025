@@ -44,9 +44,9 @@
                 <div id="usersTableContainer" class="tab-pane fade show active">
 
                 <div class="d-flex buttons d-flex justify-content-end">
-                    <button type="button" class="btn btn-sm btn-success" id="addStudentButton">Add Student</button>  <!-- Green -->
-                    <button type="button" class="btn btn-sm btn-warning" id="export">Export</button>  <!-- Yellow -->
-                    <button type="button" class="btn btn-sm btn-danger" id="import">Import</button>  <!-- Red -->
+                    <button type="button" class="btn btn-sm btn-success" id="addStudentButton">Add Student</button>
+                    <button type="button" class="btn btn-sm btn-warning" id="export">Export</button>  
+                    <button type="button" class="btn btn-sm btn-danger" id="import">Import</button> 
                 </div>
                 <div class="table-container">
                     <table id="StudeInfo" class="display" style="width:100%">
@@ -95,7 +95,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form id="updateStudentForm" method="POST">
+                        <form id="AddStudentForm" method="POST">
                             <!-- Populate with your fields, similar to the Add Student modal -->
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -363,7 +363,7 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('script.js') }}"></script> <!-- Your custom script file -->
+    <script src="{{ asset('script.js') }}"></script>
 
 
     <script>
@@ -474,12 +474,11 @@
                 });
             }        
 
-            // Add Modal Btn
             $('#addStudentButton').on('click', function() {
                 $('#addStudentModal').modal('show');
             });
 
-            $('#updateStudentForm').on('submit', function(e) {
+            $('#AddStudentForm').on('submit', function(e) {
                 e.preventDefault(); // Prevent the default form submission
 
                 // Get form data
@@ -487,39 +486,59 @@
 
                 // Send AJAX request
                 $.ajax({
-                    url: '/admin/add-student',  // Make sure this matches your route
-                    method: 'POST',
+                    url: '/admin/student_info/add',
+                    method: 'POST',  
                     data: formData,
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // Add CSRF token to the header
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // Include CSRF token
                     },
                     success: function(response) {
                         if (response.message === 'Student added successfully.') {
-                            // Close the modal
+                            iziToast.success({
+                                title: 'Success',
+                                message: response.message, 
+                                position: 'topRight',
+                                timeout: 3000  
+                            });
+                            $('#StudeInfo').DataTable().ajax.reload();  
                             $('#addStudentModal').modal('hide');
-
-                            // Optionally, reset the form
-                            $('#updateStudentForm')[0].reset();
-
-                            // Show success message
-                            alert(response.message);
+                            $('#AddStudentForm')[0].reset(); 
                         } else if (response.message === 'Student data already exists.') {
-                            // Show a message if the student already exists
-                            alert(response.message);
+                            iziToast.error({
+                                title: 'Error',
+                                message: response.message, 
+                                position: 'topRight',
+                                timeout: 3000  
+                            });
+                            $('#addStudentModal').modal('hide');
+                            $('#AddStudentForm')[0].reset(); 
                         }
                     },
                     error: function(xhr, status, error) {
-                        // Handle errors if any
-                        var errors = xhr.responseJSON.errors;
+                        var errors = xhr.responseJSON.errors; // Check if there are server-side validation errors
                         if (errors) {
-                            // Display error messages if any
-                            alert('Error: ' + Object.values(errors).join(', '));
+                            iziToast.error({
+                                title: 'Error',
+                                message: Object.values(errors).join(', '),
+                                position: 'topRight',
+                                timeout: 3000  
+                            });
                         } else {
-                            alert('An error occurred. Please try again.');
+                            iziToast.error({
+                                title: 'Error',
+                                message: 'An error occurred. Please try again.',
+                                position: 'topRight',
+                                timeout: 3000  
+                            });
+                            $('#addStudentModal').modal('hide');
+                            $('#AddStudentForm')[0].reset(); 
                         }
                     }
                 });
             });
+
+
+
 
 
             // Update Modal Btn

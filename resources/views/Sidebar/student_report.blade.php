@@ -14,6 +14,7 @@
 
 
 
+
     
 </head>
 <body>
@@ -29,9 +30,9 @@
     <div class="main-content">
         <h2>Students Reports</h2>
         <div class="d-flex buttons d-flex justify-content-end">
-            <button type="button" class="btn btn-sm btn-success" id="addStudentButton">Add Student</button>  <!-- Green -->
-            <button type="button" class="btn btn-sm btn-danger" id="generate">Generate Report</button>  <!-- Red -->
-            <button type="button" class="btn btn-sm btn-warning" id="export">Export</button>  <!-- Yellow -->
+            <button type="button" class="btn btn-sm btn-danger" id="generate">Generate Report</button>  
+            <button type="button" class="btn btn-sm btn-warning" id="export">Export</button> 
+            <button type="button" class="btn btn-sm btn-danger" id="import">Import</button> 
         </div>
 
     <!-- Bootstrap Tabs -->
@@ -226,6 +227,9 @@
             </div>
         </div>
 
+        <!-- Import Modal -->
+        <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importStudentModalLabel" aria-hidden="true">
+
 
 
     <!-- JS Libraries -->
@@ -236,93 +240,88 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('script.js') }}"></script>
 
-    <script>
-        $(document).ready(function() { 
-            // Initialize Admins DataTable
-            $('#StudEnrolled').DataTable({
-                processing: true,
-                serverSide: true,
-                // scrollY: "300px",
-                // scrollCollapse: true,
-                ajax: "{{ route('admin.student_report.list') }}",
-                columns: [
-                    { data: 'IDno', name: 'IDno' },
-                    { data: 'FullName', name: 'FullName' },
-                    { data: 'Course', name: 'Course' },
-                    { data: 'yearLevel', name: 'yearLevel' },
-                    { 
-                        data: 'action', 
-                        name: 'action', 
-                        orderable: false, 
-                        searchable: false, 
-                        render: function(data, type, row) {
-                            return `
-                                <button class="action-btn delete" onclick="deleteUser(${row.IDno})">Delete</button>
-                            `;
-                        }
+<script>
+    $(document).ready(function() { 
+        // Initialize Admins DataTable
+        $('#StudEnrolled').DataTable({
+            processing: true,
+            serverSide: true,
+            // scrollY: "300px",
+            // scrollCollapse: true,
+            ajax: "{{ route('admin.student_report.list') }}",
+            columns: [
+                { data: 'IDno', name: 'IDno' },
+                { data: 'FullName', name: 'FullName' },
+                { data: 'Course', name: 'Course' },
+                { data: 'yearLevel', name: 'yearLevel' },
+                { 
+                    data: 'action', 
+                    name: 'action', 
+                    orderable: false, 
+                    searchable: false, 
+                    render: function(data, type, row) {
+                        return `
+                            <button class="action-btn delete" onclick="deleteUser(${row.IDno})">Delete</button>
+                        `;
                     }
-                ]
-            });
-            // Add Modal Btn
-            $('#addStudentButton').on('click', function() {
-            $('#addStudentModal').modal('show');
-        })
-
-            $('#generate').on('click', function() {
-                $('#GenerateReport').modal('show');
-        })
-        });
-
-        function deleteUser(IDno) {
-            // Replace confirm with SweetAlert2 modal
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'You won\'t be able to revert this!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '/admin/student_report/delete/' + IDno,  // Use Studno in the URL
-                        type: 'DELETE',
-                        data: {
-                            _token: '{{ csrf_token() }}',  // CSRF token for security
-                        },
-                        success: function(response) {
-                            // Success message using iziToast
-                            iziToast.success({
-                                title: 'Success',
-                                message: 'Student deleted successfully!',
-                                position: 'topRight',
-                                timeout: 3000  // Show message for 3 seconds
-                            });
-                            $('#StudEnrolled').DataTable().ajax.reload();  // Refresh the DataTable
-                        },
-                        error: function(xhr, status, error) {
-                            // Error message using iziToast
-                            iziToast.error({
-                                title: 'Error',
-                                message: 'Error deleting student: ' + (xhr.responseJSON.error || error),
-                                position: 'topRight',
-                                timeout: 3000  // Show message for 3 seconds
-                            });
-                        }
-                    });
                 }
-            });
-        }
+            ]
+        });
+    // Add Modal Btn
+    $('#import').on('click', function() {
+        $('#importModal').modal('show');
+    })
 
+    $('#generate').on('click', function() {
+        $('#GenerateReport').modal('show');
+    })
 
+    
+    
+    });
 
-
-
-
-
-     
-    </script>
+    function deleteUser(IDno) {
+        // Replace confirm with SweetAlert2 modal
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/admin/student_report/delete/' + IDno,  // Use Studno in the URL
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}',  // CSRF token for security
+                    },
+                    success: function(response) {
+                        // Success message using iziToast
+                        iziToast.success({
+                            title: 'Success',
+                            message: 'Student deleted successfully!',
+                            position: 'topRight',
+                            timeout: 3000  // Show message for 3 seconds
+                        });
+                        $('#StudEnrolled').DataTable().ajax.reload();  // Refresh the DataTable
+                    },
+                    error: function(xhr, status, error) {
+                        // Error message using iziToast
+                        iziToast.error({
+                            title: 'Error',
+                            message: 'Error deleting student: ' + (xhr.responseJSON.error || error),
+                            position: 'topRight',
+                            timeout: 3000  // Show message for 3 seconds
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>
 </body>
 </html>

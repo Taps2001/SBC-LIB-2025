@@ -17,16 +17,15 @@
     
     @include('sidebar.sidebar')
 
-
     <div class="main-content">
 
         <h2>Admin Dashboard</h2>
         <div class="d-flex  justify-content-end align-items-center">
             <div class="buttons">
             <div class="buttons d-flex justify-content-end">
-                    <button type="button" class="btn btn-sm btn-success" id="addStudentButton">Add Student</button>  <!-- Green -->
-                    <button type="button" class="btn btn-sm btn-danger" id="export">Export</button>  <!-- Yellow -->
-                    <button type="button" class="btn btn-sm btn-warning" id="import">Import</button>  <!-- Red -->
+                    <!-- <button type="button" class="btn btn-sm btn-success" id="addStudentButton">Add Student</button>   -->
+                    <button type="button" class="btn btn-sm btn-danger" id="export">Export</button> 
+                    <!-- <button type="button" class="btn btn-sm btn-warning" id="import">Import</button>  -->
                 </div>
             </div>
             <div class="buttons filter me-2">

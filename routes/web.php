@@ -59,7 +59,7 @@ Route::get('/last-login', function (Request $request) {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     // Admin Dashboard
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-
+    
     // Sidebar Pages (Using Controllers for better organization)
     Route::view('/student_info', 'Sidebar.student_info')->name('student_info');
     Route::view('/student_enrolled', 'Sidebar.student_enrolled')->name('student_enrolled');
@@ -74,17 +74,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/student_report/list', [StudEnrolled::class, 'getStudentReport'])->name('student_report.list');
     Route::delete('/student_report/delete/{IDno}', [StudEnrolled::class, 'deleteStudent']);
 
-
-
-
     // Student Info Routes
     Route::get('/student_info/list', [StudInfo::class, 'getStudentInfo'])->name('student_info.list');
-    // Route for editing student
-    Route::get('/students/{id}', [StudInfo::class, 'show']); // Show student details by IDno
     Route::delete('/student_info/delete/{IDno}', [StudInfo::class, 'deleteStudent']);
-    Route::post('/add-student', [StudInfo::class, 'AddStudent'])->name('addStudent');
-
-    
-    
+    Route::post('/student_info/add', [StudInfo::class, 'AddStudent']);
+  
 });
 

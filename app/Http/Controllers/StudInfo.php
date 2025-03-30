@@ -17,36 +17,43 @@ class StudInfo extends Controller
                 'IDNo',
                 DB::raw("CONCAT(lname, ' ', Fname, ' ', mi) as FullName"),
                 'Gender', 'vCourse', 'HomeAddress', 'isActive'
-            ]);
-
-            
+            ]);     
             return DataTables::of($studentsinfo)
             ->rawColumns([]) 
             ->make(true);
         }
-
         return response()->json(['error' => 'Unauthorized request'], 403);
-
-       
     }
 
     public function AddStudent(Request $request)
     {
         try {
-            // Validate the incoming request data
             $validated = $request->validate([
-                'IDNo' => 'required'
-                // add other fields as needed
+                'IDNo' => 'required|unique:tblstudentinfo,IDNo', 
+                'BarcodeNo' => 'nullable|string|max:40',
+                'lname' => 'nullable|string|max:35',
+                'fname' => 'nullable|string|max:25',
+                'mi' => 'nullable|string|max:25',
+                'Gender' => 'nullable|string|max:15',
+                'isActive' => 'nullable|boolean',
+                'vCourse' => 'nullable|string|max:45',
+                'yearLevel' => 'nullable|string|max:15',
+                'Bdate' => 'nullable|date',
+                'PBirth' => 'nullable|string|max:45',
+                'HomeAddress' => 'nullable|string|max:45',
+                'Gurdian' => 'nullable|string|max:45',
+                'Guardian_Address' => 'nullable|string|max:45',
+                'idstatus' => 'nullable|string|max:45',
+                'Remarks' => 'nullable|string|max:45',
             ]);
 
-            // Retrieve the student ID from the request
-            $IDNo = $validated['IDNo'];
-
-            // Check if the student with this ID already exists
-            $student = DB::table('tblstudentinfo')->where('IDNo', $IDNo)->first();
+            $student = DB::table('tblstudentinfo')
+                    ->where('IDNo', $validated['IDNo'])
+                    ->orwhere('BarcodeNo', $validated['BarcodeNo'])
+                    ->first();
 
             if ($student) {
-                return response()->json(['message' => 'Student data already exists.'], 400);
+                return response()->json(['message' => 'Student data already exists.'], 400);  
             } else {
                 DB::table('tblstudentinfo')->insert([
                     'IDNo' => $validated['IDNo'],
@@ -67,27 +74,25 @@ class StudInfo extends Controller
                     'Remarks' => $validated['Remarks'],
                 ]);
 
-                return response()->json(['message' => 'Student added successfully.'], 201);
+                return response()->json(['message' => 'Student added successfully.'], 201); 
             }
         } catch (\Exception $e) {
-            \Log::error('Error while adding student: ' . $e->getMessage());
-            return response()->json(['message' => 'An error occurred while processing your request.'], 500);
+            // Return the exception message in the response to the client
+            return response()->json([
+                'message' => 'An error occurred while processing your request.',
+                'error' => $e->getMessage(), 
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
         }
     }
 
-
     
-
-    
-
-   
-
     public function deleteStudent($IDno)
     {
         // Cast Studno to integer
         $IDno = (int) $IDno;
     
-        // Check if student exists
         $student = DB::table('tblstudentinfo')
                      ->where('IDno', $IDno)
                      ->first();
@@ -109,14 +114,6 @@ class StudInfo extends Controller
         }
     }
 
-
-    
-    // Fetch student details by IDno (fix: use correct model)
-    public function show($id)
-    {
-        $student = StudentInfoModel::findOrFail($id); // Correct model: StudentInfoModel
-        return response()->json($student); // Return student data as JSON
-    }
     
     public function updateStudent(Request $request)
     {
