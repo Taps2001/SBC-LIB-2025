@@ -14,7 +14,7 @@ class StudentInfoModel extends Model
     protected $fillable = [
         'IDNo', 'BarcodeNo', 'lname', 'fname', 'mi', 'username', 'vCourse',
         'HomeAddress', 'PBirth', 'Gurdian', 'Guardian_Address', 'Gender',
-        'yearLevel', 'Bdate', 'Remarks', 'isprinted', 'isActive', 'idstatus', 'No'
+        'yearLevel', 'Bdate', 'Remarks', 'isActive', 'idstatus', 'No'
     ];
 
     public $timestamps = false;

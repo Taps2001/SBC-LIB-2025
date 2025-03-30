@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Student Information</title>
     
     <!-- CSS -->
@@ -43,7 +45,6 @@
 
                 <div class="d-flex buttons d-flex justify-content-end">
                     <button type="button" class="btn btn-sm btn-success" id="addStudentButton">Add Student</button>  <!-- Green -->
-                    <!-- <button type="button" class="btn btn-sm btn-success" id="updateStudentButton">Update Student</button>   -->
                     <button type="button" class="btn btn-sm btn-warning" id="export">Export</button>  <!-- Yellow -->
                     <button type="button" class="btn btn-sm btn-danger" id="import">Import</button>  <!-- Red -->
                 </div>
@@ -94,47 +95,50 @@
                     </div>
 
                     <div class="modal-body">
-                        <form id="updateStudentForm">
+                        <form id="updateStudentForm" method="POST">
                             <!-- Populate with your fields, similar to the Add Student modal -->
                             <div class="row g-3">
-                            <div class="col-md-6">
+                                <div class="col-md-6">
                                     <label for="IDNo" class="form-label">ID Number</label>
-                                    <input type="text" class="form-control" id="IDNo" name="IDNo" required>
+                                    <input type="text" class="form-control" id="IDNo" name="IDNo">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="BarcodeNo" class="form-label">Barcode Number</label>
-                                    <input type="text" class="form-control" id="BarcodeNo" name="BarcodeNo" required>
+                                    <input type="text" class="form-control" id="BarcodeNo" name="BarcodeNo">
                                 </div>
 
                                 <!-- Second Row -->
                                 <div class="col-md-4">
                                     <label for="lname" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="lname" name="lname" required>
+                                    <input type="text" class="form-control" id="lname" name="lname">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="fname" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="fname" name="fname" required>
+                                    <input type="text" class="form-control" id="fname" name="fname">
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label for="lname" class="form-label">Middle Name</label>
-                                    <input type="text" class="form-control" id="lname" name="lname" required>
+                                    <label for="mi" class="form-label">Middle Name</label>
+                                    <input type="text" class="form-control" id="mi" name="mi">
                                 </div>
 
                                 <!-- Third Row -->
                                 <div class="col-md-2">
                                     <label for="Gender" class="form-label">Gender</label>
-                                    <select class="form-select" id="Gender" name="Gender" required>
+                                    <select class="form-select" id="Gender" name="Gender">
                                         <option value="" selected disabled>Choose...</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                     </select>
                                 </div>
 
-
                                 <div class="col-md-3">
                                     <label for="isActive" class="form-label">Status</label>
-                                    <input type="text" class="form-control" id="isActive" name="isActive" required>
+                                    <select class="form-select" id="isActive" name="isActive">
+                                        <option value="" selected disabled>Choose...</option>
+                                        <option value="0">Inactive</option>
+                                        <option value="1">Active</option>
+                                    </select>
                                 </div>
 
                                 <div class="col-md-6">
@@ -147,12 +151,12 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="Bdate" class="form-label">Birthdate</label>
-                                    <input type="date" class="form-control" id="Bdate" name="Bdate" required>
+                                    <input type="date" class="form-control" id="Bdate" name="Bdate">
                                 </div>
 
                                 <div class="col-md-4">
                                     <label for="PBirth" class="form-label">Birth Place</label>
-                                    <input type="text" class="form-control" id="PBirth" name="PBirth" required>
+                                    <input type="text" class="form-control" id="PBirth" name="PBirth">
                                 </div>
 
                                 <!-- Fourth Row -->
@@ -172,14 +176,14 @@
                                 </div>
 
                                 <div class="col-md-5">
-                                    <label for="idstatus" class="form-label">ID STATUS</label>
-                                    <select class="form-select" id="idstatus" name="idstatus" required>
+                                    <label for="idstatus" class="form-label">ID Status</label>
+                                    <select class="form-select" id="idstatus" name="idstatus">
                                         <option value="" selected disabled>Choose...</option>
                                         <option value="New">New</option>
                                         <option value="Renew">Renew</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="col-md-7">
                                     <label for="Remarks" class="form-label">Remarks</label>
                                     <input type="text" class="form-control" id="Remarks" name="Remarks">
@@ -372,7 +376,7 @@
                 // scrollCollapse: true,
                 ajax: "{{ route('admin.student_info.list') }}",
                 columns: [
-                        { data: 'IDno', name: 'IDno' },
+                        { data: 'IDNo', name: 'IDNo' },
                         { data: 'FullName', name: 'FullName' },
                         { data: 'Gender', name: 'Gender' },
                         { data: 'vCourse', name: 'vCourse' },
@@ -468,51 +472,55 @@
                         });
                     }
                 });
-            }
-
-            function openUpdateModal(studentId) {
-                $.ajax({
-                    url: `/students/${studentId}`,  // Correct URL for fetching student details
-                    method: 'GET',
-                    success: function(data) {
-                        console.log(data); // Log to verify the response data structure
-
-                        // Populate the modal fields with the returned student data
-                        $('#BarcodeNo').val(data.BarcodeNo);
-                        $('#lname').val(data.lname); // Ensure your backend returns `lname`
-                        $('#fname').val(data.fname);
-                        $('#mname').val(data.mi); // Assuming `mi` is the middle name
-                        $('#Gender').val(data.Gender);
-                        $('#isActive').val(data.isActive);
-                        $('#vCourse').val(data.vCourse);
-                        $('#yearLevel').val(data.yearLevel);
-                        $('#Bdate').val(data.Bdate);  // Ensure this matches the correct date field
-                        $('#PBirth').val(data.PBirth);  // Assuming `PBirth` is the correct field
-                        $('#HomeAddress').val(data.HomeAddress);
-                        $('#Gurdian').val(data.Gurdian);
-                        $('#Guardian_Address').val(data.Guardian_Address);
-                        $('#idstatus').val(data.idstatus);
-                        $('#Remarks').val(data.Remarks);
-
-                        // Show the modal
-                        $('#updateStudentModal').modal('show');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching student data:', error);
-                    }
-                });
-            }
-
-
-
-           
-
-
+            }        
 
             // Add Modal Btn
             $('#addStudentButton').on('click', function() {
                 $('#addStudentModal').modal('show');
             });
+
+            $('#updateStudentForm').on('submit', function(e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                // Get form data
+                var formData = $(this).serialize(); // Serialize form data
+
+                // Send AJAX request
+                $.ajax({
+                    url: '/admin/add-student',  // Make sure this matches your route
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // Add CSRF token to the header
+                    },
+                    success: function(response) {
+                        if (response.message === 'Student added successfully.') {
+                            // Close the modal
+                            $('#addStudentModal').modal('hide');
+
+                            // Optionally, reset the form
+                            $('#updateStudentForm')[0].reset();
+
+                            // Show success message
+                            alert(response.message);
+                        } else if (response.message === 'Student data already exists.') {
+                            // Show a message if the student already exists
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors if any
+                        var errors = xhr.responseJSON.errors;
+                        if (errors) {
+                            // Display error messages if any
+                            alert('Error: ' + Object.values(errors).join(', '));
+                        } else {
+                            alert('An error occurred. Please try again.');
+                        }
+                    }
+                });
+            });
+
 
             // Update Modal Btn
             $('#updateStudentButton').on('click', function() {

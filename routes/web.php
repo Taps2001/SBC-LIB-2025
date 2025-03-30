@@ -82,6 +82,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Route for editing student
     Route::get('/students/{id}', [StudInfo::class, 'show']); // Show student details by IDno
     Route::delete('/student_info/delete/{IDno}', [StudInfo::class, 'deleteStudent']);
+    Route::post('/add-student', [StudInfo::class, 'AddStudent'])->name('addStudent');
+
+    
     
 });
 
