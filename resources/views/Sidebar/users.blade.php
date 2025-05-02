@@ -105,8 +105,6 @@
             $('#usersTable').DataTable({
                 processing: true,
                 serverSide: true,
-                scrollY: "300px", // Enable vertical scrolling
-                scrollCollapse: true,
                 ajax: "{{ route('admin.users.list', ['role' => 'user']) }}",
                 columns: [
                     { data: 'id', name: 'id' },

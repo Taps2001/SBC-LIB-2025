@@ -76,8 +76,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Student Info Routes
     Route::get('/student_info/list', [StudInfo::class, 'getStudentInfo'])->name('student_info.list');
-    Route::delete('/student_info/delete/{IDno}', [StudInfo::class, 'deleteStudent']);
     Route::post('/student_info/add', [StudInfo::class, 'AddStudent']);
+    Route::get('/student_info/{IDNo}/edit', [StudInfo::class, 'edit']);
+    Route::put('/student_info/{IDNo}/update', [StudInfo::class, 'update']);
+    Route::delete('/student_info/delete/{IDno}', [StudInfo::class, 'deleteStudent']);
+    
   
 });
 

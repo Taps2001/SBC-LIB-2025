@@ -108,17 +108,17 @@
                                 </div>
 
                                 <!-- Second Row -->
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <label for="lname" class="form-label">Last Name</label>
                                     <input type="text" class="form-control" id="lname" name="lname">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <label for="fname" class="form-label">First Name</label>
                                     <input type="text" class="form-control" id="fname" name="fname">
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label for="mi" class="form-label">Middle Name</label>
+                                    <label for="mi" class="form-label">Middle Initial</label>
                                     <input type="text" class="form-control" id="mi" name="mi">
                                 </div>
 
@@ -132,16 +132,16 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-3">
+                                <!-- <div class="col-md-3">
                                     <label for="isActive" class="form-label">Status</label>
                                     <select class="form-select" id="isActive" name="isActive">
                                         <option value="" selected disabled>Choose...</option>
                                         <option value="0">Inactive</option>
                                         <option value="1">Active</option>
                                     </select>
-                                </div>
+                                </div> -->
 
-                                <div class="col-md-6">
+                                <div class="col-md-7">
                                     <label for="vCourse" class="form-label">Course</label>
                                     <input type="text" class="form-control" id="vCourse" name="vCourse">
                                 </div>
@@ -175,7 +175,7 @@
                                     <input type="text" class="form-control" id="Guardian_Address" name="Guardian_Address">
                                 </div>
 
-                                <div class="col-md-5">
+                                <div class="col-md-3">
                                     <label for="idstatus" class="form-label">ID Status</label>
                                     <select class="form-select" id="idstatus" name="idstatus">
                                         <option value="" selected disabled>Choose...</option>
@@ -184,7 +184,17 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-7">
+                                <div class="col-md-3">
+                                    <label for="isenrolled" class="form-label">Is Enrolled?</label>
+                                    <select class="form-select" id="isenrolled" name="isenrolled">
+                                        <option value="" selected disabled>Choose...</option>
+                                        <option value="Processing">Processing</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Enrolled">Enrolled</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
                                     <label for="Remarks" class="form-label">Remarks</label>
                                     <input type="text" class="form-control" id="Remarks" name="Remarks">
                                 </div>
@@ -212,36 +222,36 @@
 
                     <div class="modal-body">
                         <form id="updateStudentForm">
-                            <!-- Populate with your fields, similar to the Add Student modal -->
+                        <input type="hidden" id="update_id">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="BarcodeNo" class="form-label">Barcode Number</label>
-                                    <input type="text" class="form-control" id="BarcodeNo" name="BarcodeNo" required>
+                                    <label for="Barcode" class="form-label fw-bold text-center">Barcode Number</label>
+                                    <input type="text" class="form-control" id="Bar" name="Barcode">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="IDno" class="form-label">ID Number</label>
-                                    <input type="text" class="form-control" id="IDno" name="IDno" required>
+                                    <label for="ID" class="form-label fw-bold text-center">ID Number</label>
+                                    <input type="text" class="form-control" id="ID" name="ID">
                                 </div>
 
                                 <!-- Second Row -->
                                 <div class="col-md-4">
-                                    <label for="lname" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="lname" name="lname" required>
+                                    <label for="lname" class="form-label fw-bold text-center">Last Name</label>
+                                    <input type="text" class="form-control" id="l" name="lname">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="fname" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="fname" name="fname" required>
+                                    <label for="fname" class="form-label fw-bold text-center">First Name</label>
+                                    <input type="text" class="form-control" id="f" name="fname">
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label for="mi" class="form-label">Middle Name</label>
-                                    <input type="text" class="form-control" id="mi" name="mi" required>
+                                    <label for="mi" class="form-label fw-bold text-center">Middle Name</label>
+                                    <input type="text" class="form-control" id="m" name="mi">
                                 </div>
 
                                 <!-- Third Row -->
                                 <div class="col-md-2">
-                                    <label for="Gender" class="form-label">Gender</label>
-                                    <select class="form-select" id="Gender" name="Gender" required>
+                                    <label for="Gender" class="form-label fw-bold text-center">Gender</label>
+                                    <select class="form-select" id="gen" name="Gender">
                                         <option value="" selected disabled>Choose...</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -250,56 +260,66 @@
 
 
                                 <div class="col-md-3">
-                                    <label for="isActive" class="form-label">Status</label>
-                                    <input type="text" class="form-control" id="isActive" name="isActive" required>
+                                    <label for="isActive" class="form-label fw-bold text-center">Status</label>
+                                    <input type="text" class="form-control" id="status" name="isActive">
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="vCourse" class="form-label">Course</label>
-                                    <input type="text" class="form-control" id="vCourse" name="vCourse">
+                                    <label for="vCourse" class="form-label fw-bold text-center">Course</label>
+                                    <input type="text" class="form-control" id="course" name="vCourse">
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="yearLevel" class="form-label">Year Level</label>
-                                    <input type="text" class="form-control" id="yearLevel" name="yearLevel">
+                                    <label for="yearLevel" class="form-label fw-bold text-center">Year Level</label>
+                                    <input type="text" class="form-control" id="year" name="yearLevel">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="Bdate" class="form-label">Birthdate</label>
-                                    <input type="date" class="form-control" id="Bdate" name="Bdate" required>
+                                    <label for="Bdate" class="form-label fw-bold text-center">Birthdate</label>
+                                    <input type="date" class="form-control" id="birt" name="Bdate">
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="PBirth" class="form-label">Birth Place</label>
-                                    <input type="text" class="form-control" id="PBirth" name="PBirth" required>
+                                    <label for="PBirth" class="form-label fw-bold text-center">Birth Place</label>
+                                    <input type="text" class="form-control" id="placeb" name="PBirth">
                                 </div>
 
                                 <!-- Fourth Row -->
                                 <div class="col-md-4">
-                                    <label for="HomeAddress" class="form-label">Home Address</label>
-                                    <input type="text" class="form-control" id="HomeAddress" name="HomeAddress">
+                                    <label for="HomeAddress" class="form-label fw-bold text-center">Home Address</label>
+                                    <input type="text" class="form-control" id="homed" name="HomeAddress">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="Gurdian" class="form-label">Guardian</label>
-                                    <input type="text" class="form-control" id="Gurdian" name="Gurdian">
+                                    <label for="Gurdian" class="form-label fw-bold text-center">Guardian</label>
+                                    <input type="text" class="form-control" id="guard" name="Gurdian">
                                 </div>
 
                                 <!-- Fifth Row -->
                                 <div class="col-md-6">
-                                    <label for="Guardian_Address" class="form-label">Guardian Address</label>
-                                    <input type="text" class="form-control" id="Guardian_Address" name="Guardian_Address">
+                                    <label for="Guardian_Address" class="form-label fw-bold text-center">Guardian Address</label>
+                                    <input type="text" class="form-control" id="guard_Address" name="Guardian_Address">
                                 </div>
 
-                                <div class="col-md-5">
-                                    <label for="idstatus" class="form-label">ID STATUS</label>
-                                    <select class="form-select" id="idstatus" name="idstatus" required>
+                                <div class="col-md-3">
+                                    <label for="idstatus" class="form-label fw-bold text-center">ID STATUS</label>
+                                    <select class="form-select" id="id" name="idstatus">
                                         <option value="" selected disabled>Choose...</option>
                                         <option value="New">New</option>
                                         <option value="Renew">Renew</option>
                                     </select>
                                 </div>
+
+                                <div class="col-md-3">
+                                    <label for="isenrolled" class="form-label fw-bold text-center">Is Enrolled?</label>
+                                    <select class="form-select" id="enrolled" name="isenrolled">
+                                        <option value="" >Choose...</option>
+                                        <option value="Processing">Processing</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Enrolled">Enrolled</option>
+                                    </select>
+                                </div>
                                 
-                                <div class="col-md-7">
-                                    <label for="Remarks" class="form-label">Remarks</label>
-                                    <input type="text" class="form-control" id="Remarks" name="Remarks">
+                                <div class="col-md-6">
+                                    <label for="Remarks" class="form-label fw-bold text-center">Remarks</label>
+                                    <input type="text" class="form-control" id="marks" name="Remarks">
                                 </div>
                             </div>
 
@@ -313,9 +333,6 @@
                 </div>
             </div>
         </div>
-
-
-
 
       <!-- Import Modal -->
       <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importStudentModalLabel" aria-hidden="true">
@@ -358,6 +375,8 @@
 
 
     <!-- JS Libraries -->
+   
+   
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -367,198 +386,251 @@
 
 
     <script>
-        $(document).ready(function() {
-            // Initialize Users DataTable
-            $('#StudeInfo').DataTable({
-                processing: true,
-                serverSide: true,
-                // scrollY: "300px", // Enable vertical scrolling
-                // scrollCollapse: true,
-                ajax: "{{ route('admin.student_info.list') }}",
-                columns: [
-                        { data: 'IDNo', name: 'IDNo' },
-                        { data: 'FullName', name: 'FullName' },
-                        { data: 'Gender', name: 'Gender' },
-                        { data: 'vCourse', name: 'vCourse' },
-                        { data: 'HomeAddress', name: 'HomeAddress' },
-                        { data: 'isActive', name: 'isActive' },
-                        { 
-                            data: 'action', 
-                            name: 'action', 
-                            orderable: false, 
-                            searchable: false, 
-                            render: function(data, type, row) {
-                                return `
-                                    <button class="action-btn update" onclick="openUpdateModal(${row.id})">Update</button>
-                                    <button class="action-btn delete" data-id="${row.IDno}">Delete</button>
-
-
-                                `;
-                            }
-                        }
-                ]
-            });
-
-            // Initialize Admins DataTable
-            $('#StudEnrolled').DataTable({
-                processing: true,
-                serverSide: true,
-                // scrollY: "300px",
-                // scrollCollapse: true,
-                ajax: "{{ route('admin.student_report.list') }}",
-                columns: [
-                    { data: 'IDno', name: 'IDno' },
-                    { data: 'FullName', name: 'FullName' },
-                    { data: 'Course', name: 'Course' },
-                    { data: 'yearLevel', name: 'yearLevel' },
-                    { 
-                        data: 'action', 
-                        name: 'action', 
-                        orderable: false, 
-                        searchable: false, 
-                        render: function(data, type, row) {
-                            return `
-                                <button class="action-btn delete" onclick="deleteUser(${row.IDno})">Delete</button>
-                            `;
-                        }
+    $(document).ready(function() {
+        // STUDENT INFO TABLE
+        $('#StudeInfo').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('admin.student_info.list') }}",
+            columns: [
+                { data: 'IDNo', name: 'IDNo' },
+                { data: 'FullName', name: 'FullName' },
+                { data: 'Gender', name: 'Gender' },
+                { data: 'vCourse', name: 'vCourse' },
+                { data: 'HomeAddress', name: 'HomeAddress' },
+                { data: 'isActive', name: 'isActive' },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return `
+                            <button class="action-btn update" onclick="openUpdateModal('${row.IDNo}')">Update</button>
+                            <button class="action-btn delete" data-id="${row.IDNo}">Delete</button>
+                        `;
                     }
-                ]
-            });
+                }
+            ]
+        });
 
-            // Event delegation for the delete button
-            $(document).on('click', '.delete', function() {
-                const IDno = $(this).data('id');
-                deleteUser(IDno);
-            });
 
-            function deleteUser(IDno) {
-                // Replace confirm with SweetAlert2 modal
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'You won\'t be able to revert this!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: '/admin/student_info/delete/' + IDno,  // Ensure correct URL for delete
-                            type: 'DELETE',
-                            data: {
-                                _token: '{{ csrf_token() }}',  // CSRF token for security
-                            },
-                            success: function(response) {
-                                // Success message using iziToast
-                                iziToast.success({
-                                    title: 'Success',
-                                    message: 'Student deleted successfully!',
-                                    position: 'topRight',
-                                    timeout: 3000  // Show message for 3 seconds
-                                });
-                                $('#StudeInfo').DataTable().ajax.reload();  // Refresh the DataTable
-                            },
-                            error: function(xhr, status, error) {
-                                // Error message using iziToast
-                                iziToast.error({
-                                    title: 'Error',
-                                    message: 'Error deleting student: ' + (xhr.responseJSON.error || error),
-                                    position: 'topRight',
-                                    timeout: 3000  // Show message for 3 seconds
-                                });
-                            }
+        
+
+    // STUDENT ENROLLED TABLE
+    $('#StudEnrolled').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('admin.student_report.list') }}",
+        columns: [
+            { data: 'IDno', name: 'IDno' },
+            { data: 'FullName', name: 'FullName' },
+            { data: 'Course', name: 'Course' },
+            { data: 'yearLevel', name: 'yearLevel' },
+            { 
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row) {
+                    return `<button class="action-btn delete" onclick="deleteUser(${row.IDno})">Delete</button>`;
+                }
+            }
+        ]
+    });
+
+    // DELETE STUDENT
+    $(document).on('click', '.delete', function() {
+        const IDNo = $(this).data('id');
+        deleteUser(IDNo);
+    });
+
+    function deleteUser(IDNo) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/admin/student_info/delete/' + IDNo,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function(response) {
+                        iziToast.success({
+                            title: 'Success',
+                            message: 'Student deleted successfully!',
+                            position: 'topRight',
+                            timeout: 3000
+                        });
+                        $('#StudeInfo').DataTable().ajax.reload();
+                    },
+                    error: function(xhr) {
+                        iziToast.error({
+                            title: 'Error',
+                            message: xhr.responseJSON?.error || 'Failed to delete student.',
+                            position: 'topRight'
                         });
                     }
                 });
-            }        
-
-            $('#addStudentButton').on('click', function() {
-                $('#addStudentModal').modal('show');
-            });
-
-            $('#AddStudentForm').on('submit', function(e) {
-                e.preventDefault(); // Prevent the default form submission
-
-                // Get form data
-                var formData = $(this).serialize(); // Serialize form data
-
-                // Send AJAX request
-                $.ajax({
-                    url: '/admin/student_info/add',
-                    method: 'POST',  
-                    data: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // Include CSRF token
-                    },
-                    success: function(response) {
-                        if (response.message === 'Student added successfully.') {
-                            iziToast.success({
-                                title: 'Success',
-                                message: response.message, 
-                                position: 'topRight',
-                                timeout: 3000  
-                            });
-                            $('#StudeInfo').DataTable().ajax.reload();  
-                            $('#addStudentModal').modal('hide');
-                            $('#AddStudentForm')[0].reset(); 
-                        } else if (response.message === 'Student data already exists.') {
-                            iziToast.error({
-                                title: 'Error',
-                                message: response.message, 
-                                position: 'topRight',
-                                timeout: 3000  
-                            });
-                            $('#addStudentModal').modal('hide');
-                            $('#AddStudentForm')[0].reset(); 
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        var errors = xhr.responseJSON.errors; // Check if there are server-side validation errors
-                        if (errors) {
-                            iziToast.error({
-                                title: 'Error',
-                                message: Object.values(errors).join(', '),
-                                position: 'topRight',
-                                timeout: 3000  
-                            });
-                        } else {
-                            iziToast.error({
-                                title: 'Error',
-                                message: 'An error occurred. Please try again.',
-                                position: 'topRight',
-                                timeout: 3000  
-                            });
-                            $('#addStudentModal').modal('hide');
-                            $('#AddStudentForm')[0].reset(); 
-                        }
-                    }
-                });
-            });
-
-
-
-
-
-            // Update Modal Btn
-            $('#updateStudentButton').on('click', function() {
-                $('#updateStudentModal').modal('show');
-            });
-
-            // Import Modal Btn
-            $('#import').on('click', function() {
-                    $('#importModal').modal('show');
-                });
-            });
-
-            
-            function openUpdateModal(studentId) {
-                // Show the modal
-                $('#updateStudentModal').modal('show');
             }
+        });
+    }
 
-     
-    </script>
+    // ADD STUDENT
+    $('#addStudentButton').on('click', function() {
+        $('#addStudentModal').modal('show');
+    });
+
+    $('#AddStudentForm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: '/admin/student_info/add',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.message === 'Student added successfully.') {
+                    iziToast.success({
+                        title: 'Success',
+                        message: response.message,
+                        position: 'topRight'
+                    });
+                    $('#StudeInfo').DataTable().ajax.reload();
+                    $('#addStudentModal').modal('hide');
+                    $('#AddStudentForm')[0].reset();
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: response.message,
+                        position: 'topRight'
+                    });
+                }
+            },
+            error: function(xhr) {
+                var errors = xhr.responseJSON.errors;
+                if (errors) {
+                    iziToast.error({
+                        title: 'Error',
+                        message: Object.values(errors).join(', '),
+                        position: 'topRight'
+                    });
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'An error occurred. Please try again.',
+                        position: 'topRight'
+                    });
+                }
+            }
+        });
+    });
+
+    // IMPORT BUTTON
+    $('#import').on('click', function() {
+            $('#importModal').modal('show');
+        });
+    });
+
+// UPDATE AND EDIT STUDENT FUNCTION OUTSIDE READY
+    function openUpdateModal(IDNo) {
+        $.ajax({
+            url: `/admin/student_info/${IDNo}/edit`,
+            type: 'GET',
+            success: function(response) {
+                $('#update_id').val(response.IDNo);
+                $('#Bar').val(response.BarcodeNo);
+                $('#ID').val(response.IDNo);
+                $('#l').val(response.lname);
+                $('#f').val(response.fname);
+                $('#m').val(response.mi);
+                $('#gen').val(response.Gender);
+                $('#status').val(response.isActive);
+                $('#course').val(response.vCourse);
+                $('#year').val(response.yearLevel);
+                $('#birt').val(response.Bdate);
+                $('#placeb').val(response.PBirth);
+                $('#homed').val(response.HomeAddress);
+                $('#guard').val(response.Gurdian);
+                $('#guard_Address').val(response.Guardian_Address);
+                $('#id').val(response.idstatus);
+                $('#marks').val(response.Remarks);
+                $('#enrolled').val(response.isenrolled);
+
+                $('#updateStudentModal').modal('show');
+            },
+            error: function(xhr) {
+                console.error("Failed to fetch data for update", xhr);
+            }
+        });
+    }
+
+    // Submit update form
+    $('#updateStudentForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const IDNo = $('#update_id').val(); // Hidden input holding the ID
+
+        const data = {
+            BarcodeNo: $('#Bar').val(),
+            IDNo: $('#ID').val(),
+            lname: $('#l').val(),
+            fname: $('#f').val(),
+            mi: $('#m').val(),
+            Gender: $('#gen').val(),
+            isActive: $('#status').val(),
+            vCourse: $('#course').val(),
+            yearLevel: $('#year').val(),
+            Bdate: $('#birt').val(),
+            PBirth: $('#placeb').val(),
+            HomeAddress: $('#homed').val(),
+            Gurdian: $('#guard').val(),
+            Guardian_Address: $('#guard_Address').val(),
+            idstatus: $('#id').val(),
+            Remarks: $('#marks').val(),
+            isenrolled: $('#isenrolled').val(),
+            _token: $('meta[name="csrf-token"]').attr('content') // CSRF token for Laravel
+        };
+
+        $.ajax({
+            url: `/admin/student_info/${IDNo}/update`, // Backend endpoint
+            type: 'PUT',
+            data: data,
+            success: function (response) {
+                $('#updateStudentModal').modal('hide');
+                $('#StudeInfo').DataTable().ajax.reload(null, false); // Reload the table
+
+                iziToast.success({
+                    title: 'Success',
+                    message: 'Student updated successfully!',
+                    position: 'topRight'
+                });
+            },
+            error: function (xhr) {
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Update failed. Please check your inputs.',
+                    position: 'topRight'
+                });
+            }
+        });
+    });
+
+
+    
+
+
+</script>
+
 </body>
 </html>

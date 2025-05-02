@@ -10,18 +10,40 @@ use Illuminate\Support\Facades\DB;
 
 class StudInfo extends Controller
 {
+    
     public function getStudentInfo(Request $request)
     {
         if ($request->ajax()) {
-            $studentsinfo = StudentInfoModel::select([
-                'IDNo',
-                DB::raw("CONCAT(lname, ' ', Fname, ' ', mi) as FullName"),
-                'Gender', 'vCourse', 'HomeAddress', 'isActive'
-            ]);     
+            // Define the base query
+            $studentsinfo = DB::table('tblstudentinfo')
+                ->select([
+                    'IDNo',
+                    'lname',
+                    'fname',
+                    'mi',
+                    'Gender',
+                    'vCourse',
+                    'HomeAddress',
+                    'isActive'
+                ]);
+    
+            // Apply global search if a search term is provided
+            if ($search = $request->get('search')['value']) {
+                $studentsinfo->where(function($query) use ($search) {
+                    $query->where('lname', 'like', "%{$search}%")
+                          ->orWhere('fname', 'like', "%{$search}%")
+                          ->orWhere('mi', 'like', "%{$search}%");
+                });
+            }
+    
+            // Return the DataTables response
             return DataTables::of($studentsinfo)
-            ->rawColumns([]) 
-            ->make(true);
+                ->addColumn('FullName', function($row) {
+                    return "{$row->lname} {$row->fname} {$row->mi}";
+                })
+                ->make(true);
         }
+    
         return response()->json(['error' => 'Unauthorized request'], 403);
     }
 
@@ -35,7 +57,7 @@ class StudInfo extends Controller
                 'fname' => 'nullable|string|max:25',
                 'mi' => 'nullable|string|max:25',
                 'Gender' => 'nullable|string|max:15',
-                'isActive' => 'nullable|boolean',
+                // 'isActive' => 'nullable|boolean',
                 'vCourse' => 'nullable|string|max:45',
                 'yearLevel' => 'nullable|string|max:15',
                 'Bdate' => 'nullable|date',
@@ -45,6 +67,7 @@ class StudInfo extends Controller
                 'Guardian_Address' => 'nullable|string|max:45',
                 'idstatus' => 'nullable|string|max:45',
                 'Remarks' => 'nullable|string|max:45',
+                'isenrolled' => 'nullable|string|max:45',
             ]);
 
             $student = DB::table('tblstudentinfo')
@@ -62,7 +85,7 @@ class StudInfo extends Controller
                     'fname' => $validated['fname'],
                     'mi' => $validated['mi'],
                     'Gender' => $validated['Gender'],
-                    'isActive' => $validated['isActive'],
+                    // 'isActive' => $validated['isActive'],
                     'vCourse' => $validated['vCourse'],
                     'yearLevel' => $validated['yearLevel'],
                     'Bdate' => $validated['Bdate'],
@@ -72,6 +95,7 @@ class StudInfo extends Controller
                     'Guardian_Address' => $validated['Guardian_Address'],
                     'idstatus' => $validated['idstatus'],
                     'Remarks' => $validated['Remarks'],
+                    'isenrolled' => $validated['isenrolled'],
                 ]);
 
                 return response()->json(['message' => 'Student added successfully.'], 201); 
@@ -88,23 +112,23 @@ class StudInfo extends Controller
     }
 
     
-    public function deleteStudent($IDno)
+    public function deleteStudent($IDNo)
     {
         // Cast Studno to integer
-        $IDno = (int) $IDno;
+        $IDNo = (int) $IDNo;
     
         $student = DB::table('tblstudentinfo')
-                     ->where('IDno', $IDno)
+                     ->where('IDNo', $IDNo)
                      ->first();
     
         if (!$student) {
-            \Log::error("Student with Studno {$IDno} not found.");
+            \Log::error("Student with Studno {$IDNo} not found.");
             return response()->json(['error' => 'Student not found'], 404);
         }
     
         try {
             DB::table('tblstudentinfo')
-              ->where('IDno', $IDno)
+              ->where('IDNo', $IDNo)
               ->delete();
     
             return response()->json(['success' => 'Student deleted successfully']);
@@ -114,33 +138,68 @@ class StudInfo extends Controller
         }
     }
 
-    
-    public function updateStudent(Request $request)
+    public function edit($IDNo)
     {
-        // Validate incoming request data
+        $tblstudentinfo = DB::table('tblstudentinfo')->where('IDNo', $IDNo)->first(); // Retrieve the participant by ID
+        if ($tblstudentinfo) {
+            return response()->json($tblstudentinfo); // Return participant data as JSON
+        } else {
+            return response()->json(['message' => 'Data ID not found'], 404);
+        }
+    }
+    
+    public function update(Request $request, $IDNo)
+    {
+        // Validate the request data
         $validatedData = $request->validate([
-            'IDno' => 'required|exists:student_info,IDno',
+            'IDNo' => 'required|string',
+            'BarcodeNo' => 'nullable|string',
             'fname' => 'required|string',
             'lname' => 'required|string',
+            'mi' => 'nullable|string',
             'Gender' => 'required|string',
-            // Add validation for other fields as necessary
+            // 'isActive' => 'nullable|numeric',
+            'vCourse' => 'nullable|string',
+            'yearLevel' => 'nullable|string',
+            'Bdate' => 'nullable|date',
+            'PBirth' => 'nullable|string',
+            'HomeAddress' => 'nullable|string',
+            'Gurdian' => 'nullable|string',
+            'Guardian_Address' => 'nullable|string',
+            'idstatus' => 'nullable|string',
+            'Remarks' => 'nullable|string',
+            'isenrolled' => 'nullable|string',
         ]);
     
-        $student = StudentInfoModel::where('IDno', $validatedData['IDno'])->first();
+        // Check if the student exists
+        $student = DB::table('tblstudentinfo')->where('IDNo', $IDNo)->first();
     
         if (!$student) {
-            return response()->json(['success' => false, 'message' => 'Student not found']);
+            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
         }
     
-        // Update student data
-        $student->update([
-            'fname' => $validatedData['fname'],
-            'lname' => $validatedData['lname'],
-            'Gender' => $validatedData['Gender'],
-            // Update other fields here
+        // Update the student record
+        DB::table('tblstudentinfo')->where('IDNo', $IDNo)->update([
+            'BarcodeNo' => $request->input('BarcodeNo'),
+            'fname' => $request->input('fname'),
+            'lname' => $request->input('lname'),
+            'mi' => $request->input('mi'),
+            'Gender' => $request->input('Gender'),
+            'isActive' => $request->input('isActive'),
+            'vCourse' => $request->input('vCourse'),
+            'yearLevel' => $request->input('yearLevel'),
+            'Bdate' => $request->input('Bdate'),
+            'PBirth' => $request->input('PBirth'),
+            'HomeAddress' => $request->input('HomeAddress'),
+            'Gurdian' => $request->input('Gurdian'),
+            'Guardian_Address' => $request->input('Guardian_Address'),
+            'idstatus' => $request->input('idstatus'),
+            'Remarks' => $request->input('Remarks'),
+            'isenrolled' => $request->input('isenrolled'),
         ]);
     
         return response()->json(['success' => true, 'message' => 'Student updated successfully']);
     }
+    
     
 }
