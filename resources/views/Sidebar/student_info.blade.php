@@ -184,7 +184,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-3">
+                                <!-- <div class="col-md-3">
                                     <label for="isenrolled" class="form-label">Is Enrolled?</label>
                                     <select class="form-select" id="isenrolled" name="isenrolled">
                                         <option value="" selected disabled>Choose...</option>
@@ -192,7 +192,7 @@
                                         <option value="Pending">Pending</option>
                                         <option value="Enrolled">Enrolled</option>
                                     </select>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-6">
                                     <label for="Remarks" class="form-label">Remarks</label>
@@ -307,7 +307,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-3">
+                                <!-- <div class="col-md-3">
                                     <label for="isenrolled" class="form-label fw-bold text-center">Is Enrolled?</label>
                                     <select class="form-select" id="enrolled" name="isenrolled">
                                         <option value="" >Choose...</option>
@@ -315,7 +315,7 @@
                                         <option value="Pending">Pending</option>
                                         <option value="Enrolled">Enrolled</option>
                                     </select>
-                                </div>
+                                </div> -->
                                 
                                 <div class="col-md-6">
                                     <label for="Remarks" class="form-label fw-bold text-center">Remarks</label>
@@ -598,7 +598,7 @@
             Guardian_Address: $('#guard_Address').val(),
             idstatus: $('#id').val(),
             Remarks: $('#marks').val(),
-            isenrolled: $('#isenrolled').val(),
+            // isenrolled: $('#isenrolled').val(),
             _token: $('meta[name="csrf-token"]').attr('content') // CSRF token for Laravel
         };
 

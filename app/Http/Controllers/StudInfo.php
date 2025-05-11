@@ -67,7 +67,6 @@ class StudInfo extends Controller
                 'Guardian_Address' => 'nullable|string|max:45',
                 'idstatus' => 'nullable|string|max:45',
                 'Remarks' => 'nullable|string|max:45',
-                'isenrolled' => 'nullable|string|max:45',
             ]);
 
             $student = DB::table('tblstudentinfo')
@@ -95,7 +94,6 @@ class StudInfo extends Controller
                     'Guardian_Address' => $validated['Guardian_Address'],
                     'idstatus' => $validated['idstatus'],
                     'Remarks' => $validated['Remarks'],
-                    'isenrolled' => $validated['isenrolled'],
                 ]);
 
                 return response()->json(['message' => 'Student added successfully.'], 201); 
@@ -168,7 +166,7 @@ class StudInfo extends Controller
             'Guardian_Address' => 'nullable|string',
             'idstatus' => 'nullable|string',
             'Remarks' => 'nullable|string',
-            'isenrolled' => 'nullable|string',
+           
         ]);
     
         // Check if the student exists
@@ -195,7 +193,7 @@ class StudInfo extends Controller
             'Guardian_Address' => $request->input('Guardian_Address'),
             'idstatus' => $request->input('idstatus'),
             'Remarks' => $request->input('Remarks'),
-            'isenrolled' => $request->input('isenrolled'),
+            
         ]);
     
         return response()->json(['success' => true, 'message' => 'Student updated successfully']);
