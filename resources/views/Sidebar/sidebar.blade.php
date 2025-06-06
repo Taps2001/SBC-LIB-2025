@@ -20,7 +20,7 @@
     <div class="top-header">Southern Baptist College Library</div>
 
         <div class="sidebar">
-            <img src="{{ asset('images/sbclogo.jpg') }}" alt="Logo" class="logo">
+            <img src="{{ asset('images/LogoSbc.png') }}" alt="Logo" class="logo">
 
             <button onclick="window.location.href='{{ route('admin.dashboard') }}'" class="active"><img src="{{ asset('icons/dashboard.png') }}" alt="Dashboard">Dashboard</button>
             <button onclick="window.location.href='{{ route('admin.student_info') }}'"><img  src="{{ asset('icons/students.png') }}" alt="Students">Student Info</button>

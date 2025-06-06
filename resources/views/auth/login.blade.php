@@ -1,4 +1,12 @@
 <x-guest-layout>
+
+
+    <!-- Custom Logo -->
+    <div class="flex justify-center mb-4">
+        <a href="/">
+            <img src="{{ asset('images/LogoSbc.png') }}" alt="Logo" class="w-27 h-auto">
+        </a>
+    </div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

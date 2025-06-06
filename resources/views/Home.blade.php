@@ -9,7 +9,7 @@
 <body>
   <header>
     <nav class="nav">
-      <img src="{{ asset('images/sbclogo.jpg') }}" alt="SBC Logo">
+      <img src="{{ asset('images/LogoSbc.png') }}" alt="SBC Logo">
       <h3>Southern Baptist College Library</h3>
       <ul>
           <li><a href="login">LOG IN</a></li>

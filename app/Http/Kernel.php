@@ -15,4 +15,12 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'isAdmin' => \App\Http\Middleware\IsAdmin::class, // Add this line
     ];
+
+    protected $middlewareGroups = [
+    'web' => [
+        // other middleware
+        \App\Http\Middleware\PreventBackHistory::class,
+    ],
+];
+
 }

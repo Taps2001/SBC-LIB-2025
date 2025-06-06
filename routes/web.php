@@ -56,7 +56,7 @@ Route::get('/last-login', function (Request $request) {
 })->name('last-login');
 
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'web'])->prefix('admin')->name('admin.')->group(function () {
     // Admin Dashboard
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     

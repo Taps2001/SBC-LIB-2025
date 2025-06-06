@@ -7,7 +7,7 @@
 
     <title>Student Information</title>
     
-    <!-- CSS -->
+    <link rel="icon" href="{{ asset('images/LogoSbc.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('Style/dash.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -36,7 +36,6 @@
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#adminsTableContainer">Student Enrolled</a>
             </li>
-            
         </ul>
 
         <div class="tab-content mt-3">
@@ -75,7 +74,7 @@
                                     <th>Student Name</th>
                                     <th>Course</th>
                                     <th>Year Level</th>
-                                    <th>Action</th>
+                                    <!-- <th>Action</th> -->
                                 </tr>
                             </thead>
                         </table>
@@ -194,7 +193,7 @@
                                     </select>
                                 </div> -->
 
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <label for="Remarks" class="form-label">Remarks</label>
                                     <input type="text" class="form-control" id="Remarks" name="Remarks">
                                 </div>
@@ -427,15 +426,15 @@
             { data: 'FullName', name: 'FullName' },
             { data: 'Course', name: 'Course' },
             { data: 'yearLevel', name: 'yearLevel' },
-            { 
-                data: 'action',
-                name: 'action',
-                orderable: false,
-                searchable: false,
-                render: function(data, type, row) {
-                    return `<button class="action-btn delete" onclick="deleteUser(${row.IDno})">Delete</button>`;
-                }
-            }
+            // { 
+            //     data: 'action',
+            //     name: 'action',
+            //     orderable: false,
+            //     searchable: false,
+            //     render: function(data, type, row) {
+            //         return `<button class="action-btn delete" onclick="deleteUser(${row.IDno})">Delete</button>`;
+            //     }
+            // }
         ]
     });
 

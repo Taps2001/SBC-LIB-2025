@@ -9,10 +9,10 @@
 <body>
   <header>
     <nav class="nav">
-      <a href=""><img src="images/sbclogo.jpg" alt="SBC LOGO"></a>
+      <a href=""><img src="images/LogoSbc.png" alt="SBC LOGO"></a>
       <h3>Southern Baptist College Library</h3>
       <ul>
-          <li><a href="about.html">ABOUT</a></li>
+          <li><a href="login">LOG IN</a></li>
       </ul>
     </nav>
   </header>
@@ -42,7 +42,7 @@
                       type: "GET",
                       data: { 
                           BarcodeNo: barcodeNo, 
-                          purpose: purpose // Send purpose along with request
+                          purpose: purpose 
                       }, 
                       success: function(response) {
                           if (response.success) {
