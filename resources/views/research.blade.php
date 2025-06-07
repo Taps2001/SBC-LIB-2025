@@ -30,36 +30,39 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function() {
-      $(".swipe-input").on("keypress", function(event) {
-          if (event.which == 13) { // Enter key pressed
-              let barcodeNo = $(this).val().trim();
-              let purpose = $(".subtitle-purpose").text().trim(); // Get selected purpose
+  $(document).ready(function () {
+      $(".swipe-input").on("keypress", function (event) {
+          if (event.which === 13) { // Enter key
+              const barcodeNo = $(this).val().trim();
+              const purpose = $(".subtitle-purpose").text().trim();
 
               if (barcodeNo !== "") {
                   $.ajax({
                       url: "{{ route('search.id') }}",
-                      type: "GET",
-                      data: { 
-                          BarcodeNo: barcodeNo, 
-                          purpose: purpose // Send purpose along with request
-                      }, 
-                      success: function(response) {
+                      method: "GET",
+                      data: {
+                          BarcodeNo: barcodeNo,
+                          purpose: purpose
+                      },
+                      success: function (response) {
                           if (response.success) {
-                              // Redirect with all data including purpose
-                              window.location.href = "{{ url('/last-login') }}?BarcodeNo=" + response.data.BarcodeNo +
-                                                      "&lname=" + encodeURIComponent(response.data.lname) +
-                                                      "&fname=" + encodeURIComponent(response.data.fname) +
-                                                      "&mi=" + encodeURIComponent(response.data.mi) +
-                                                      "&Course=" + encodeURIComponent(response.data.Course) +
-                                                      "&purpose=" + encodeURIComponent(response.data.purpose);
+                              const params = new URLSearchParams({
+                                  BarcodeNo: response.data.BarcodeNo || '',
+                                  lname: response.data.lname || '',
+                                  fname: response.data.fname || '',
+                                  mi: response.data.mi || '',
+                                  vCourse: response.data.vCourse || '',
+                                  purpose: response.data.purpose || ''
+                              }).toString();
+
+                              window.location.href = "{{ url('/last-login') }}?" + params;
                           } else {
-                              alert("Invalid ID! Please try again.");
+                              alert("ID Not Found. Please try again.");
                           }
                       },
-                      error: function(xhr) {
-                          console.log(xhr.responseText);
-                          alert("Error searching for ID. Please check the input.");
+                      error: function (xhr) {
+                          console.error(xhr.responseText);
+                          alert("Server error. Please try again.");
                       }
                   });
               }

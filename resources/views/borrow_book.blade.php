@@ -29,7 +29,7 @@
 </html>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+<!-- <script>
   $(document).ready(function() {
       $(".swipe-input").on("keypress", function(event) {
           if (event.which == 13) { // Enter key pressed
@@ -66,4 +66,47 @@
           }
       });
   });
+</script> -->
+
+<script>
+  $(document).ready(function () {
+      $(".swipe-input").on("keypress", function (event) {
+          if (event.which === 13) { // Enter key
+              const barcodeNo = $(this).val().trim();
+              const purpose = $(".subtitle-purpose").text().trim();
+
+              if (barcodeNo !== "") {
+                  $.ajax({
+                      url: "{{ route('search.id') }}",
+                      method: "GET",
+                      data: {
+                          BarcodeNo: barcodeNo,
+                          purpose: purpose
+                      },
+                      success: function (response) {
+                          if (response.success) {
+                              const params = new URLSearchParams({
+                                  BarcodeNo: response.data.BarcodeNo || '',
+                                  lname: response.data.lname || '',
+                                  fname: response.data.fname || '',
+                                  mi: response.data.mi || '',
+                                  vCourse: response.data.vCourse || '',
+                                  purpose: response.data.purpose || ''
+                              }).toString();
+
+                              window.location.href = "{{ url('/last-login') }}?" + params;
+                          } else {
+                              alert("ID Not Found. Please try again.");
+                          }
+                      },
+                      error: function (xhr) {
+                          console.error(xhr.responseText);
+                          alert("Server error. Please try again.");
+                      }
+                  });
+              }
+          }
+      });
+  });
 </script>
+

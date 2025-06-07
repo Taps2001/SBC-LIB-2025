@@ -12,61 +12,99 @@ class LoginController extends Controller
 
    
 
+    // public function searchID(Request $request)
+    // {
+    //     try {
+    //         $barcodeNo = $request->input('BarcodeNo');
+    //         $purpose = $request->input('purpose');
+
+    //         // Search id from tblstudenrolled
+    //         $user = DB::table('tblstudenrolled as se')
+    //             ->join('tblstudentinfo as si', 'se.IDno', '=', 'si.IDno') 
+    //             ->select(
+    //                 'se.IDno', 'se.BarcodeNo', 'se.Course',
+    //                 'si.lname', 'si.fname', 'si.mi'
+    //             ) 
+    //             ->where('se.BarcodeNo', $barcodeNo) 
+    //             ->first();
+
+    //         if (!$user) {
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => 'ID Not Found',
+    //             ], 404);
+    //         }
+
+    //         // insert the data
+    //         $this->logStudentEntry($user->IDno, $user->BarcodeNo, $user->Course, $purpose);
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'ID Found & Logged Successfully',
+    //             'data' => [
+    //                 'BarcodeNo' => $user->BarcodeNo ?? 'N/A',
+    //                 'lname' => $user->lname ?? 'N/A',
+    //                 'fname' => $user->fname ?? 'N/A',
+    //                 'mi' => $user->mi ?? 'N/A',
+    //                 'Course' => $user->Course ?? 'N/A',
+    //                 'purpose' => $purpose ?? 'N/A',
+    //             ],
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Server Error: ' . $e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
+
+
     public function searchID(Request $request)
     {
         try {
-            $barcodeNo = $request->input('BarcodeNo');
+            $input = $request->input('BarcodeNo'); 
             $purpose = $request->input('purpose');
 
-            // Search id from tblstudenrolled
-            $user = DB::table('tblstudenrolled as se')
-                ->join('tblstudentinfo as si', 'se.IDno', '=', 'si.IDno') 
-                ->select(
-                    'se.IDno', 'se.BarcodeNo', 'se.Course',
-                    'si.lname', 'si.fname', 'si.mi'
-                ) 
-                ->where('se.BarcodeNo', $barcodeNo) 
+            // Search by matching either IDNo or BarcodeNo
+            $user = DB::table('tblstudentinfo')
+                ->select('IDNo', 'BarcodeNo', 'lname', 'fname', 'mi', 'vCourse')
+                ->where('IDNo', $input)
+                ->orWhere('BarcodeNo', $input)
                 ->first();
 
-            if (!$user) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'ID Not Found',
-                ], 404);
-            }
-
             // insert the data
-            $this->logStudentEntry($user->IDno, $user->BarcodeNo, $user->Course, $purpose);
-
+            $this->logStudentEntry($user->IDNo, $user->BarcodeNo, $user->vCourse, $purpose);
+           
             return response()->json([
                 'success' => true,
-                'message' => 'ID Found & Logged Successfully',
+                'message' => $user ? 'Student found and logged.' : 'Student not found.',
                 'data' => [
+                    'IDNo'      => $user->IDNo ?? 'N/A',
                     'BarcodeNo' => $user->BarcodeNo ?? 'N/A',
-                    'lname' => $user->lname ?? 'N/A',
-                    'fname' => $user->fname ?? 'N/A',
-                    'mi' => $user->mi ?? 'N/A',
-                    'Course' => $user->Course ?? 'N/A',
-                    'purpose' => $purpose ?? 'N/A',
+                    'lname'     => $user->lname ?? 'N/A',
+                    'fname'     => $user->fname ?? 'N/A',
+                    'mi'        => $user->mi ?? 'N/A',
+                    'vCourse'   => $user->vCourse ?? 'N/A',
+                    'purpose'   => $purpose ?? 'N/A',
                 ],
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Server Error: ' . $e->getMessage(),
+                'message' => 'Server error: ' . $e->getMessage(),
             ], 500);
         }
     }
 
-    //into tbl_login012012
-    private function logStudentEntry($IDno, $BarcodeNo, $Course, $purpose)
+    //into tbl_login012013
+    private function logStudentEntry($IDNo, $BarcodeNo, $vCourse, $purpose)
     {
         try {
-            DB::table('tbl_login012012')->insert([
+            DB::table('loghistory')->insert([
                 'logtime' => Carbon::now(), 
-                'IDno' => $IDno,
+                'IDNo' => $IDNo,
                 'BarcodeNo' => $BarcodeNo,
-                'Course'=> $Course,
+                'vCourse'=> $vCourse,
                 'purpose'=> $purpose,
                
             ]);
